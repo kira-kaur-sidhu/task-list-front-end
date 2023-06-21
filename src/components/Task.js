@@ -11,7 +11,7 @@ const Task = (props) => {
     <li className="tasks__item">
       <button
         className={`tasks__item__toggle ${buttonClass}`}
-        onClick={() => {props.changeComplete(props.id);}}
+        onClick={() => {props.changeComplete(props.id, props.isComplete);}}
       >
         {props.title}
       </button>
@@ -24,6 +24,7 @@ Task.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   isComplete: PropTypes.bool.isRequired,
+  description: PropTypes.string.isRequired,
   changeComplete: PropTypes.func.isRequired,
   deleteTask: PropTypes.func.isRequired,
 };

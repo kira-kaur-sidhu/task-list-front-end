@@ -11,7 +11,8 @@ const TaskList = ({ tasks, changeComplete, deleteTask }) => {
           key={task.id}
           id={task.id}
           title={task.title}
-          isComplete={task.isComplete}
+          description={task.description}
+          isComplete={task.is_complete}
           changeComplete={changeComplete}
           deleteTask={deleteTask}
         />
@@ -26,7 +27,9 @@ TaskList.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      isComplete: PropTypes.bool.isRequired,
+      // eslint-disable-next-line camelcase
+      is_complete: PropTypes.bool.isRequired,
+      description: PropTypes.string.isRequired,
     })
   ).isRequired,
   changeComplete: PropTypes.func.isRequired,

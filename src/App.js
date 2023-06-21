@@ -1,42 +1,63 @@
 import React from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import axios from "axios";
 
-const TASKS = [
-  {
-    id: 1,
-    title: 'Mow the lawn',
-    isComplete: false,
-  },
-  {
-    id: 2,
-    title: 'Cook Pasta',
-    isComplete: true,
-  },
-];
+// const TASKS = [
+//   {
+//     id: 1,
+//     title: 'Mow the lawn',
+//     isComplete: false,
+//   },
+//   {
+//     id: 2,
+//     title: 'Cook Pasta',
+//     isComplete: true,
+//   },
+// ];
 
 const App = () => {
-  const [tasks, setTasks] = useState(TASKS);
+  
+  const [tasks, setTasks] = useState([]);
+  const API = 'https://task-list-api-c17.onrender.com/tasks';
 
-  const changeComplete = (id) => {
-    const newTasks = tasks.map((task) => {
-      if (task.id === id) {
-        const updatedTask = { ...task };
-        updatedTask.isComplete = !updatedTask.isComplete;
-        return updatedTask;
-      } else {
-        return { ...task };
-      }
+  const getData = () => {
+    axios
+    .get(API)
+    .then((result) => {
+      setTasks(result.data);
+    })
+    .catch((err) => {
+      console.log(err);
     });
-    setTasks(newTasks);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const changeComplete = (id, isComplete) => {
+    const completeStatus = isComplete ? 'mark_incomplete' : 'mark_complete';
+    axios
+      .patch(`${API}/${id}/${completeStatus}`)
+      .then((result) => {
+        getData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const deleteTask = (id) => {
-    const newTasks = tasks.filter((task) => 
-      task.id != id
-    );
-    setTasks(newTasks);
+    axios
+      .delete(`${API}/${id}`)
+      .then((result) => {
+        getData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
